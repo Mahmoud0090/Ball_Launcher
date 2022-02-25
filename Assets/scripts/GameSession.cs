@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameSession : MonoBehaviour
 {
-    [SerializeField] int numOfBalls;
     [SerializeField] float restartSceneDelay;
     int enemyNums;
     private void Awake()
