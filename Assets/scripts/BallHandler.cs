@@ -75,6 +75,8 @@ public class BallHandler : MonoBehaviour
         currentBallSpringJoint2D.enabled = false;
         currentBallSpringJoint2D = null;
 
+        FindObjectOfType<GameSession>().ProcessingBallsNums();
+
         Invoke(nameof(SpawnNewBall), respawnDelay);
     }
 }
