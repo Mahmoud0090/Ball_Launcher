@@ -16,16 +16,19 @@ public class BallHandler : MonoBehaviour
 
     private Camera mainCamera;
     private bool isDragging;
+    GameSession gameSession;
     // Start is called before the first frame update
     void Start()
     {
         SpawnNewBall();
         mainCamera = Camera.main;
+        gameSession = FindObjectOfType<GameSession>();
     }
 
     // Update is called once per frame
     void Update()
     {
+       
         if (currentBallRigidbody2D == null) { return; }
 
         if (!Touchscreen.current.primaryTouch.press.isPressed)
@@ -54,6 +57,7 @@ public class BallHandler : MonoBehaviour
 
     private void SpawnNewBall()
     {
+
         GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity);
 
         currentBallRigidbody2D = ballInstance.GetComponent<Rigidbody2D>();
@@ -66,7 +70,6 @@ public class BallHandler : MonoBehaviour
     {
         currentBallRigidbody2D.isKinematic = false;
         currentBallRigidbody2D = null;
-
         Invoke(nameof(DetachTheBall), detachDelay);
     }
 
@@ -74,8 +77,6 @@ public class BallHandler : MonoBehaviour
     {
         currentBallSpringJoint2D.enabled = false;
         currentBallSpringJoint2D = null;
-
-        FindObjectOfType<GameSession>().ProcessingBallsNums();
 
         Invoke(nameof(SpawnNewBall), respawnDelay);
     }

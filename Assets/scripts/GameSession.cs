@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameSession : MonoBehaviour
 {
     [SerializeField] int numOfBalls;
+    [SerializeField] float restartSceneDelay;
+    int enemyNums;
     private void Awake()
     {
         int numGameSession = FindObjectsOfType<GameSession>().Length;
@@ -20,19 +23,27 @@ public class GameSession : MonoBehaviour
         }
     }
 
-    public void ProcessingBallsNums()
+    private void Update()
     {
-        if (numOfBalls > 0)
+        enemyNums = FindObjectsOfType<Enemy>().Length;
+
+        if (enemyNums == 0)
         {
-            numOfBalls--;
-        }
-        else
-        {
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currentSceneIndex);
-            Destroy(gameObject);
+            RestartinScene();
         }
     }
 
 
+    public void RestartinScene()
+    {
+        StartCoroutine(waitAndRestart());
+    }
+
+    private IEnumerator waitAndRestart()
+    {
+        yield return new WaitForSeconds(restartSceneDelay);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+        Destroy(gameObject);
+    }
 }
